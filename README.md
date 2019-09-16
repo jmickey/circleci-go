@@ -31,7 +31,7 @@ const (
 func main() {
     client, err := circleci.NewClient(API_TOKEN, SERVER_URL)
     if err != nil {
-        log.Fatalf("Couldn't create new CircleCI API Client: %v". err)
+        log.Fatalf("Couldn't create new CircleCI API Client: %v", err)
     }
 
     // Example call - List all followed projects:
@@ -50,3 +50,19 @@ To configure your build environment:
 3. `cd circleci-go`
 4. `go get`
 5. `go test ./...` - Confirm the tests pass!
+
+### Run Integration Tests
+
+The integration tests will attempt to reach out to the live CircleCI API. As a result you'll need to retreive an API token from CircleCI and set the following environment variable:
+
+```sh
+export CIRCLECI_KEY=<YOUR_CIRCLECI_API_KEY>
+```
+
+You may wish to change the project the tests are run against, you can do this from within [integration_test.go](/integration_test.go) file.
+
+To run the tests use the following command:
+
+```sh
+go test -tags=integration
+```
