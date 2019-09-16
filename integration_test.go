@@ -7,7 +7,7 @@ import "os"
 const (
 	serverURL string = "https://circleci.com"
 	proj      string = "circleci-go"
-	ser       string = "jmickey"
+	user      string = "jmickey"
 )
 
 func getCircleAPIKey() string {

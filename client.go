@@ -1,4 +1,4 @@
-package circleci // import mickey.dev/go/circleci-go
+package circleci // import "mickey.dev/go/circleci-go"
 
 import (
 	"context"
@@ -14,10 +14,29 @@ var (
 )
 
 type Client struct {
-	APIKey     string
+
+	// APIKey stores the CircleCI API Token. Generate a CircleCI token by
+	// navigating to https://circleci.com/account/api and generating a new token.
+	//
+	// The API token is required in order to communicate with the CircleCI
+	// API server. The authenticated user should be "Following" the projects
+	// They want to make changes to.
+	//
+	// New projects can also be followed by using the client.Projects.Follow() API call.
+	APIKey string
+
+	// ServerURL should be the CircleCI server URL to make API calls against.
+	//
+	// For CircleCI SaaS use https://circleci.com. For CircleCI Server
+	// (previously Enterprise) use your internal CircleCI URL. If your
+	// CircleCI Server requires a custom port that isn't 443, then include
+	// this in the URL. E.g. https://circle.company.com:8080
 	ServerURL  string
 	httpClient *http.Client
 
+	// Projects represents the CircleCI project resources. This will be
+	// instantiated by default with a *circleci.ProjectService object when
+	// circleci.NewClient() is called.
 	Projects *ProjectService
 }
 

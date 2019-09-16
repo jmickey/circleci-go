@@ -1,4 +1,4 @@
-package circleci // import mickey.dev/go/circleci-go
+package circleci // import "mickey.dev/go/circleci-go"
 
 import (
 	"context"
