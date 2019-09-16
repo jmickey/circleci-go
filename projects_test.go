@@ -1,3 +1,5 @@
+// +build !integration
+
 package circleci_test
 
 import (
@@ -34,18 +36,18 @@ func TestListProjects(t *testing.T) {
 func TestGetProject(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(200)
-		rw.Write([]byte(`{
+		rw.Write([]byte(`[{
 			"reponame": "testRepo",
 			"following": true,
 			"vcs_url": "https://github.com/testuser/testRepo",
 			"username": "testuser"
-		}`))
+		}]`))
 	}))
 
 	c, err := circleci.NewClient("someapitoken", srv.URL, circleci.SetBaseHTTPClient(srv.Client()))
 	require.Nil(t, err, "circleci.NewClient() error should be nil, received: %v", err)
 
-	project, err := c.Projects.Get(context.Background(), "someRepo", "testuser")
+	project, err := c.Projects.Get(context.Background(), "testRepo", "testuser")
 	require.Nil(t, err, "c.Projects.Get() returned an error, expected nil: %v", err)
 	assert.Equal(t, "testRepo", project.Name, "Project.Name returned incorrect value. Expected: 'testRepo', got: %v", project.Name)
 }

@@ -1,14 +1,16 @@
 package circleci // import mickey.dev/go/circleci-go
 
 import (
+	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"path"
 )
 
 var (
-	ProjectsEndpoint = "/projects"
+	ProjectsEndpoint = "projects"
 )
 
 type Client struct {
@@ -23,18 +25,18 @@ type ClientOption func(*Client) error
 
 type ReqOption func(*http.Request) error
 
-func NewClient(apiKey, serverURL string, opts ...ClientOption) (*Client, error) {
+func NewClient(apiKey, server string, opts ...ClientOption) (*Client, error) {
 	apiPath := "/api/v1.1/"
-	u, err := url.Parse(serverURL)
+	serverURL, err := url.Parse(server)
 	if err != nil {
-		return nil, fmt.Errorf("Couldn't parse URL: %v. Error: %w", serverURL, err)
+		return nil, fmt.Errorf("Couldn't parse URL: %v. Error: %w", server, err)
 	}
 
-	u.Path = path.Join(u.Path, apiPath)
+	serverURL.Path = path.Join(serverURL.Path, apiPath)
 
 	c := &Client{
 		APIKey:     apiKey,
-		ServerURL:  serverURL,
+		ServerURL:  serverURL.String(),
 		httpClient: &http.Client{},
 	}
 
@@ -52,6 +54,15 @@ func NewClient(apiKey, serverURL string, opts ...ClientOption) (*Client, error) 
 
 func (c *Client) buildRequestURL(endpoint string) string {
 	return fmt.Sprintf("%s/%s?circle-token=%s", c.ServerURL, endpoint, c.APIKey)
+}
+
+func (c *Client) newCircleRequestWithContext(ctx context.Context, verb string, url string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, verb, url, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Accept", "applications/json")
+	return req, nil
 }
 
 func SetBaseHTTPClient(client *http.Client) func(*Client) error {

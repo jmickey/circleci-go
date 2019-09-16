@@ -1,8 +1,9 @@
+// +build !integration
+
 package circleci_test
 
 import (
 	"net/http"
-	"os"
 	"testing"
 	"time"
 
@@ -11,16 +12,12 @@ import (
 	"mickey.dev/go/circleci-go"
 )
 
-func getCircleAPIKey() string {
-	return os.Getenv("CIRCLECI_KEY")
-}
-
 func TestNewClient(t *testing.T) {
 	client, err := circleci.NewClient("TestAPIToken", "https://testserver.com")
 	require.Nil(t, err, "Error should be nil")
 	require.NotNil(t, client, "Client should no be nil")
 	assert.Equal(t, "TestAPIToken", client.APIKey, "API Token doesn't match in client")
-	assert.Equal(t, "https://testserver.com", client.ServerURL, "ServerURL doesn't match in client")
+	assert.Equal(t, "https://testserver.com/api/v1.1", client.ServerURL, "ServerURL doesn't match in client")
 }
 
 func TestNewClientWithCustomClient(t *testing.T) {
