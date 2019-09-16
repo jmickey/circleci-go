@@ -30,7 +30,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: pwd
-      - run: GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
+      - run: GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@latest
       - run: golangci-lint run --issues-exit-code=0
 
   test:
