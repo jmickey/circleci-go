@@ -27,9 +27,7 @@ jobs:
   lint:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/
-      - run: pwd
+      - checkout
       - run: GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@latest
       - run: golangci-lint run --issues-exit-code=0
 
