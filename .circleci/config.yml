@@ -58,13 +58,8 @@ workflows:
   version: 2
   build_test_lint:
     jobs:
-      - build:
-         filters:
-          branches:
-            ignore: master
-      - lint:
-          requires:
-            - build
+      - build
+      - lint
       - test:
           requires:
             - build
