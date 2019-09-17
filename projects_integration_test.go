@@ -15,7 +15,7 @@ import (
 func TestListProjectsIntegration(t *testing.T) {
 	token := getCircleAPIKey()
 
-	client, err := circleci.NewClient(token, serverURL)
+	client, err := circleci.NewClient(token)
 	require.Nil(t, err, "circleci.NewClient() error should be nil, received: %v", err)
 
 	projects, err := client.Projects.List(context.Background())
@@ -26,7 +26,7 @@ func TestListProjectsIntegration(t *testing.T) {
 func TestGetProjectIntegration(t *testing.T) {
 	token := getCircleAPIKey()
 
-	client, err := circleci.NewClient(token, serverURL)
+	client, err := circleci.NewClient(token)
 	require.Nil(t, err, "circleci.NewClient() error should be nil, received: %v", err)
 
 	project, err := client.Projects.Get(context.Background(), proj, user)

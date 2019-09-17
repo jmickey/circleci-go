@@ -59,7 +59,7 @@ The integration tests will attempt to reach out to the live CircleCI API. As a r
 export CIRCLECI_KEY=<YOUR_CIRCLECI_API_KEY>
 ```
 
-You may wish to change the project the tests are run against, you can do this from within [integration_test.go](/integration_test.go) file.
+You may wish to change the project the tests are run against, you can do this from within the [integration_test.go](/integration_test.go) file.
 
 To run the tests use the following command:
 
