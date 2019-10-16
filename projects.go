@@ -11,42 +11,6 @@ type ProjectService struct {
 	client *Client
 }
 
-// [ {
-//   "vcs_url": "https://github.com/circleci/mongofinil",
-//   "followed": true, // true if you follow this project in CircleCI
-//   "username": "circleci",
-//   "reponame": "mongofinil",
-//   "branches" : {
-//     "master" : {
-//       "pusher_logins" : [ "pbiggar", "arohner" ], // users who have pushed
-//       "last_non_success" : { // last failed build on this branch
-//         "pushed_at" : "2013-02-12T21:33:14Z",
-//         "vcs_revision" : "1d231626ba1d2838e599c5c598d28e2306ad4e48",
-//         "build_num" : 22,
-//         "outcome" : "failed",
-//         },
-//       "last_success" : { // last successful build on this branch
-//         "pushed_at" : "2012-08-09T03:59:53Z",
-//         "vcs_revision" : "384211bbe72b2a22997116a78788117b3922d570",
-//         "build_num" : 15,
-//         "outcome" : "success",
-//         },
-//       "recent_builds" : [ { // last 5 builds, ordered by pushed_at (decreasing)
-//         "pushed_at" : "2013-02-12T21:33:14Z",
-//         "vcs_revision" : "1d231626ba1d2838e599c5c598d28e2306ad4e48",
-//         "build_num" : 22,
-//         "outcome" : "failed",
-//         }, {
-//         "pushed_at" : "2013-02-11T03:09:54Z",
-//         "vcs_revision" : "0553ba86b35a97e22ead78b0d568f6a7c79b838d",
-//         "build_num" : 21,
-//         "outcome" : "failed",
-//         }, ... ],
-//       "running_builds" : [ ] // currently running builds
-//     }
-//   }
-// }, ... ]
-
 // Project type models the returned values from the /projects endpoint of the
 // CircleCI API.
 type Project struct {
