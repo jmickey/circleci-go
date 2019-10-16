@@ -12,13 +12,18 @@ import (
 
 const (
 	defaultBaseURL = "https://circleci.com/api/v1.1/"
+	defaultVCSType = "github"
 	userAgent      = "circleci-go"
 	acceptHeader   = "application/json"
 	contentType    = "application/json"
+
+	VCSTypeGitHub    = "github"
+	VCSTypeBitBucket = "bitbucket"
 )
 
 type Client struct {
 	httpClient *http.Client
+
 	// APIKey stores the CircleCI API Token. Generate a CircleCI token by navigating
 	// to https://circleci.com/account/api and generating a new token.
 	//
@@ -37,6 +42,14 @@ type Client struct {
 	// E.g. https://circle.company.com:8080/
 	BaseURL *url.URL
 
+	// VCSType is the Version Control System that hosts the CircleCI projects you wish
+	// manipulate via CircleCI API. This is also included in API path when calling the
+	// CircleCI API. This will be either "github" or "bitbucket".
+	//
+	// The default VCSTypeis "github" and can be overridden by passing the WithVCSType
+	// option function when calling NewClient().
+	VCSType string
+
 	// Projects represents the CircleCI project resources. This will be instantiated
 	// by default with a *circleci.ProjectService object when circleci.NewClient() is
 	// called.
@@ -54,6 +67,9 @@ func (e *APIError) Error() string {
 
 type ClientOption func(*Client) error
 
+// WithBaseHTTPClient returns a function that accepts a *Client value, and modifies
+// the underlying http.Client object. Pass this function into the NewClient()
+// function as an optional variadic parameter.
 func WithBaseHTTPClient(client *http.Client) func(*Client) error {
 	return func(c *Client) error {
 		c.httpClient = client
@@ -77,6 +93,18 @@ func WithBaseServerURL(u string) func(*Client) error {
 	}
 }
 
+func WithVCSType(vcs string) func(*Client) error {
+	return func(c *Client) error {
+		vcs = strings.ToLower(vcs)
+		if vcs != "github" && vcs != "bitbucket" {
+			return fmt.Errorf("Invalid VCS type, must be github or bitbucket")
+		}
+
+		c.VCSType = vcs
+		return nil
+	}
+}
+
 func NewClient(apiKey string, opts ...ClientOption) (*Client, error) {
 	baseURL, err := url.Parse(defaultBaseURL)
 	if err != nil {
@@ -86,6 +114,7 @@ func NewClient(apiKey string, opts ...ClientOption) (*Client, error) {
 	c := &Client{
 		APIKey:     apiKey,
 		BaseURL:    baseURL,
+		VCSType:    defaultVCSType,
 		httpClient: &http.Client{},
 	}
 

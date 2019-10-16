@@ -66,3 +66,9 @@ To run the tests use the following command:
 ```sh
 go test -tags=integration
 ```
+
+## To Do
+
+- Everything.
+- `/me` endpoints.
+- Jobs and Workflows.
